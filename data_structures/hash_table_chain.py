@@ -1,40 +1,40 @@
 class HashTableChaining:
     def __init__(self, size=10):
         self.size = size
-        self.table = [[] for _ in range(size)]
+        # Создаем список списков (цепочек)
+        self.table = [[] for _ in range(self.size)]
 
     def _hash(self, key):
-        return key % self.size
+        return hash(key) % self.size
 
     def insert(self, key, value):
         index = self._hash(key)
-
-        for pair in self.table[index]:
-            if pair[0] == key:
-                pair[1] = value
+        bucket = self.table[index]
+        
+        # Проверяем, есть ли уже такой ключ, чтобы обновить
+        for i, (k, v) in enumerate(bucket):
+            if k == key:
+                bucket[i] = (key, value)
                 return
-
-        self.table[index].append([key, value])
+        
+        # Если нет, добавляем
+        bucket.append((key, value))
 
     def search(self, key):
         index = self._hash(key)
-
-        for pair in self.table[index]:
-            if pair[0] == key:
-                return pair[1]
-
+        bucket = self.table[index]
+        
+        for k, v in bucket:
+            if k == key:
+                return v
         return None
 
     def delete(self, key):
         index = self._hash(key)
-
-        for i, pair in enumerate(self.table[index]):
-            if pair[0] == key:
-                del self.table[index][i]
+        bucket = self.table[index]
+        
+        for i, (k, v) in enumerate(bucket):
+            if k == key:
+                del bucket[i]
                 return True
-
         return False
-
-    def display(self):
-        for i, bucket in enumerate(self.table):
-            print(f"{i}: {bucket}")
