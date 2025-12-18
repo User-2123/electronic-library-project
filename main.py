@@ -13,3 +13,11 @@ library.show_all_books()
 print("\nПоиск книги:")
 result = library.find_book_linear("1984")
 print(result if result else "Не найдено")
+
+
+library.show_history()
+
+
+print("\nПоиск книги по ID (Hash Table):")
+book = library.find_book_by_id(2)
+print(book if book else "Не найдено")
